@@ -279,7 +279,9 @@ else
   APP_NAME=$( helm get manifest ${HELM_TLS_OPTION} ${RELEASE_NAME} --namespace ${CLUSTER_NAMESPACE} | yq read -d'*' --tojson - | jq -r | jq -r --arg image "$IMAGE_REPOSITORY:$IMAGE_TAG" '.[] | select (.kind=="Deployment") | . as $adeployment | .spec?.template?.spec?.containers[]? | select (.image==$image) | $adeployment.metadata.labels.app' )
   echo -e "APP: ${APP_NAME}"
   echo "DEPLOYED PODS:"
-  kubectl describe pods --selector app=${APP_NAME} --namespace ${CLUSTER_NAMESPACE}
+  # kubectl describe pods --selector app=${APP_NAME} --namespace ${CLUSTER_NAMESPACE}
+  kubectl describe pods -l app.kubernetes.io/instance=${IMAGE_NAME} --namespace ${CLUSTER_NAMESPACE}
+
 
   # lookup service for current release
   APP_SERVICE=$(kubectl get services --namespace ${CLUSTER_NAMESPACE} -o json | jq -r ' .items[] | select (.spec.selector.release=="'"${RELEASE_NAME}"'") | .metadata.name ')
