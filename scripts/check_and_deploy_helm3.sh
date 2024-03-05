@@ -199,6 +199,7 @@ echo "=========================================================="
 echo "DEPLOYING HELM chart"
 IMAGE_REPOSITORY=${REGISTRY_URL}/${REGISTRY_NAMESPACE}/${IMAGE_NAME}
 # IMAGE_PULL_SECRET_NAME="ibmcloud-toolchain-${PIPELINE_TOOLCHAIN_ID}-${REGISTRY_URL}"
+echo ${IMAGE_PULL_SECRET_NAME}
 
 # Using 'upgrade --install" for rolling updates.".
 echo -e "Dry run into: ${PIPELINE_KUBERNETES_CLUSTER_NAME}/${CLUSTER_NAMESPACE}."
